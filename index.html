@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{margin:0;font-family:system-ui;background:#0b0d14;color:white;display:flex;justify-content:center;align-items:center;height:100vh}
+.card{background:rgba(255,255,255,0.04);padding:28px;border-radius:20px;width:100%;max-width:360px}
+input,button{width:100%;padding:14px;border-radius:14px;border:none;margin-top:14px;font-size:16px}
+button{background:linear-gradient(135deg,#8ba4ff,#6f85ff);color:white;font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Welcome</h2>
+  <input id="email" type="email" placeholder="Email address">
+  <button onclick="sendLink()">Send magic link</button>
+</div>
+
+<script>
+const client = supabase.createClient(
+  "https://fzgmpdybtnjzqikxfaco.supabase.co",
+  "sb_publishable_-uOtGJkoTs43mx32klszYQ_pOAdTkEJ"
+);
+
+async function sendLink(){
+  const email=document.getElementById("email").value.trim();
+  if(!email) return alert("Enter email");
+
+  const { error } = await client.auth.signInWithOtp({
+    email,
+    options:{ emailRedirectTo:"https://diary-w3k8.onrender.com/diary.html" }
+  });
+
+  if(error) alert(error.message);
+  else alert("Check your email for the login link.");
+}
+</script>
+
+</body>
+</html>
